@@ -22,13 +22,11 @@ class ApiFeatures {
 
     const removeFields = ["keyword", "limit", "page"];
     removeFields.forEach((key) => delete queryCopy[key]);
-    this.query = this.query.find(queryCopy);
-    return this;
 
-    //Advance filter for price, ratings
+    // filter for price and reating
 
     let queryStr = JSON.stringify(queryCopy);
-    queryStr = queryStr.replace(/\b(gt|gte|lt|tte)\b/g, (key) => `$${key}`);
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (key) => `$${key}`);
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
   }
