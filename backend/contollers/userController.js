@@ -21,7 +21,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
 });
 
 //Login User
-exports.loginUser = catchAsyncError(async function loginUser(req, res, next) {
+exports.loginUser = catchAsyncError(async (req, res, next) => {
   const { email, password } = req.body;
 
   //Check if email and password is entered by user
@@ -43,4 +43,18 @@ exports.loginUser = catchAsyncError(async function loginUser(req, res, next) {
   }
 
   sendToken(user, 200, res);
+});
+
+//Logout user => /api/v1/logout
+
+exports.logout = catchAsyncError(async (req, res, next) => {
+  res.cookie("token", null, {
+    expirea: new Date(Date.now()),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 });
