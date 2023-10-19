@@ -77,28 +77,60 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 
   await user.save({ validateBeforeSave: false });
 
-  const resetPasswordUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${resetToken}`;
-  const message = `Hello,\nPlease use this link to reset your password:\n ${resetPasswordUrl}\nIf you have not initi`;
+  const resetPasswordUrl = `${req.protocol}://${req.get(
+       "host"
+         )}/api/v1/password/reset/${resetToken}`;
+  const message = `Hello,
+       \nPlease use this link to reset your password:-\n ${resetPasswordUrl}
+        \nIf you have not reset password ignor it`;
 
   try {
     await sendEmail({
       email: user.email,
-      subject: "ShopIT Password Recovery",
+      subject: "Password Recovery",
       message,
     });
     res.status(200).json({
       success: true,
-      message: `Email sent to ${user.email}`,
+      message: `Email sent to ${user.email} sucessfully`,
     });
 
   }
   catch(error){
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorHandler(error.message, 500));
   }
-  res.status(200).json({
-    success: true,
-    message: "Password reset link sent to your email",
-  })
+  
+});
+
+//Reset Password => /api/v1/password/reset/:token
+
+exports.resetPassword = catchAsyncError(async (req, res, next) => {
+
+  const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+
+  const user = await user.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(
+      new ErrorHandler("Password reset token is invalid or has been expired", 400)
+    );
+  }
+   
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorHandler("Password does not match", 400));
+  }
+    
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+
+  await user.save();
+sendToken(user,200,res);
 });
 
