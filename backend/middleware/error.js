@@ -13,6 +13,19 @@ module.exports = (err, req, res, next) => {
     const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
     err = new ErrorHandler(message, 400);
   }
+
+  //JWT ERROR
+  if (err.name === "JsonWebTokenError") {
+    const message = "JSON Web Token is invalid. Try Again!!!";
+    err = new ErrorHandler(err.message, 401);
+ 
+  }
+  //JWT ecpire error
+  if(err.name==="TOkenExpireError")
+  {
+    const message = "Your token has expired. Please login again";
+    err = new ErrorHandler(message, 401);
+  }
   res.status(err.statusCode).json({
     success: false,
     message: err.message,

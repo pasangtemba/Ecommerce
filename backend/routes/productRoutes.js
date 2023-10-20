@@ -12,7 +12,7 @@ const router = express.Router();
 router.route("/products").get(getAllproducts);
 
 router
-  .route("/product/new")
+  .route("admin/product/new")
   .post(isAuthenticatedUser, authorizeRoles("admin"), createProduct);
 
 router.route("/product/:id").put(isAuthenticatedUser, updateProduct);
