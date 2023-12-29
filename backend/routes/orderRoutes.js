@@ -1,9 +1,9 @@
-const exports = require("exports");
+const express = require("express");
 
 const router = express.Router();
 const {
   newOrder,
-  getallOrders,
+  getAllOrders,
   getSingleOrder,
   myOrders,
   updateOrder,
@@ -17,11 +17,11 @@ router
   .get(isAuthenticatedUser, authorizeRoles("admin"), getSingleOrder);
 router.route("/orders/me").get(isAuthenticatedUser, myOrders);
 router
-  .route("/admin/orders")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getallOrders);
+  .route("admin/orders")
+  .get(isAuthenticatedUser, authorizeRoles("admin"), getAllOrders);
 
 router
-  .route("/admin/order/:id")
+  .route("admin/order/:id")
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateOrder)
   .delete(isAuthenticatedUser, authorizeRoles("admin"), deleteOrder);
 

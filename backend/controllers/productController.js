@@ -16,7 +16,7 @@ exports.createProduct = catchAsyncError(async (req, res, next) => {
 });
 //Get All Products
 
-exports.getAllproducts = catchAsyncError(async (req, res) => {
+exports.getAllProducts = catchAsyncError(async (req, res) => {
   const resultPerPage = 5;
 
   const productCount = await Product.countDocuments();
@@ -84,7 +84,7 @@ exports.deleteProduct = catchAsyncError(async (req, res, next) => {
 });
 
 //create or update revew
-exports.reviewProduct = catchAsyncError(async (req, res, next) => {
+exports.createProductReview = catchAsyncError(async (req, res, next) => {
   req.body.user = req.user.id;
   const { rating, comment, productId } = req.body;
 

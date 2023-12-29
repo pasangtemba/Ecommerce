@@ -1,4 +1,4 @@
-const Order = require("../models/orderModel");
+const Order = require("../models/orderModels");
 const Product = require("../models/productModels");
 const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncError = require("../middleware/catchAcyncError");
@@ -61,7 +61,7 @@ exports.myOrders = catchAsyncError(async (req, res, next) => {
 });
 
 // get all orders --admin
-exports.allOrders = catchAsyncError(async (req, res, next) => {
+exports.getAllOrders = catchAsyncError(async (req, res, next) => {
   const orders = await Order.find();
 
   let totalAmount = 0;
