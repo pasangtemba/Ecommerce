@@ -1,7 +1,6 @@
 import React from "react";
 import { ReactNavbar } from "overlay-navbar";
 
-
 const options = {
   burgerColorHover: "#eb4034",
 
@@ -34,8 +33,8 @@ const options = {
   cartIconColorHover: "#eb4034",
   cartIconMargin: "1vmax",
 };
-const Headers = () => {
+const Header = () => {
   return <ReactNavbar />;
 };
 
-export default Headers;
+export default Header;

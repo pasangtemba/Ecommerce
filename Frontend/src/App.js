@@ -1,8 +1,9 @@
 import "./App.css";
-import Headers from "./components/layout/Header/Headers.js";
+import Header from "./components/layout/Header/Header.js";
 import { BrowserRouter as Router } from "react-router-dom";
 import React from "react";
 import WebFont from "webfontloader";
+import Footer from "./components/layout/Footer/Footer.js"
 
 function App() {
   React.useEffect(() => {
@@ -12,10 +13,11 @@ function App() {
       },
     });
   }, []);
-  
+
   return (
     <Router>
-      <Headers />
+      <Header />
+      <Footer/>
     </Router>
   );
 }
